@@ -51,5 +51,17 @@ $ java -version
 
 6. 将java8设置为默认的java环境；
 ```
-$ apt-get install oracle-java8-set-default
+$ apt-get install oracle-java8-set-default  这一步也可以不做
 ```
+
+
+### 安装jenkins步骤
+
+```
+wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
+sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+sudo apt-get update
+sudo apt-get install jenkins
+```
+
+
