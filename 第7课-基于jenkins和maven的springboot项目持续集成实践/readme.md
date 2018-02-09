@@ -25,6 +25,25 @@ mvn clean package
 #运行
 cd target
 java -jar  spring-all-1.0-SNAPSHOT.jar
+#或者指定其他端口
+#java -jar spring-all-1.0-SNAPSHOT.jar --server.port=8000
 ```
+
+
+假如 mvn clean package 失败， 针对 jdk1.7版本的话（java8的话7替换成8），要重新安装完整java 的包，用下面的命令
+```
+apt-get install openjdk-7-jdk openjdk-7-doc openjdk-7-jre-lib
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
