@@ -3,7 +3,7 @@
 
 
 
-### python 3.x环境安装 nose 单元测试框架
+### python 2.x/3.x 环境安装 nose 单元测试框架
 ```
 easy_install nose
 
