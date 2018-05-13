@@ -12,6 +12,10 @@ pip install pylint   或    apt-get install pylint   （Ubuntu，debian等系统
 pylint --version
 
 
+生成配置文件：
+pylint --persistent=n --generate-rcfile > pylint.conf
+
+
 指定分析某个文件：
 pylint --rcfile=pylint.conf Person.py
 
