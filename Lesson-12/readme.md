@@ -46,9 +46,74 @@ sudo apt-get update
 sudo apt-get install docker-ce
 
 
-# 下载我们的image
+# 下载实践的image
+docker pull hub.c.163.com/r00txx/debian:latest
+
+# 查看下载的 image 的文件结构
+/var/lib/docker
+
+
+# 使用容器运行Hello World
+docker run hub.c.163.com/r00txx/debian /bin/echo 'hello world'
+
+# 与容器进行交互
+docker run -t -i hub.c.163.com/r00txx/debian /bin/bash
+
+
+# 容器中运行持续任务展示管理容器生命周期， 终止就马上停止容器的生命周期
+docker run   hub.c.163.com/r00txx/debian /bin/sh -c "while true; do echo hello world; sleep 1; done"
+
+
+# 容器中运行持续任务展示管理容器生命周期， 容器的后台运行模式， 容器的生命周期在后台持续
+docker run  -d  hub.c.163.com/r00txx/debian /bin/sh -c "while true; do echo hello world; sleep 1; done"
+
+# 可以用 docker logs 容器id 来查看
+docker logs  {id}
+
+
+# 查看证明运行的容器
+docker ps
+
+# 查看所有的容器， 包括没有在运行的
+docker ps -a
+
+
+# 停止容器
+docker stop
+
+
+# 删除已经停止的容器
+docker rm {id}
+
+
+# 通过容器运行web应用并通过浏览器访问
+# 先下载 lamp 的镜像
+
+hub.c.163.com/r00txx/lamp
+
+# 运行
+docker run -itd -p 8090:80  hub.c.163.com/r00txx/lamp
+
+# 查看系统的端口
+docker ps
+
+# 进入容器修改下网页内容，查看效果
+docker exec -it {id} /bin/bash
+
+# 可以在容器内查看 HTTP 访问的日志记录
+tail -f /var/log/apache2/access.log
+
+# 查看容器内的进程列表
+docker top {id}
 
 ```
+
+
+
+
+
+
+
 
 
 
