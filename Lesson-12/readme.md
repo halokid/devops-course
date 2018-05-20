@@ -28,7 +28,7 @@ sudo apt-get update
      software-properties-common
 
 
-# 添加 GPG key
+# 添加 GPG key， 假如不成功， 就多尝试几次
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 
 
