@@ -24,6 +24,8 @@ index.php
     <title>Hello world!</title>
 </head>
 <body>
+    <?php print_r($_SERVER); ?>
+    
     <?php if($_ENV["HOSTNAME"]) {?><h3>我的主机名称是 <?php echo $_ENV["HOSTNAME"]; ?></h3><?php } ?>
 </body>
 </html>
