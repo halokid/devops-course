@@ -35,7 +35,7 @@ index.php
 ### 3, 编写Dockerfile文件
 ```
 
-FROM harbor.devopshub.cn/library/php:7.0-apache
+FROM hub.c.163.com/r00txx/lamp
 COPY index.php /var/www/html/
 
 
