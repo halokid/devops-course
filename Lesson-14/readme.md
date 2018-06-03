@@ -32,6 +32,7 @@ cd my-webapp
 重启 apache
 
 最重要的一步， 把新的修改过的 container commit 成一个新的镜像
+docker commit {id}  test-img
 
 
 ```
