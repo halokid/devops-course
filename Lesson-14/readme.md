@@ -39,7 +39,7 @@ docker commit {id}  test-img
 
 
 
-###2. 创建docker-compese文件
+###2. 创建docker-compose文件
 ```
 version: '2'
 services:
