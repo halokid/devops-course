@@ -81,7 +81,7 @@ docker run -itd -e MYSQL_ROOT_PASSWORD=xx -e MYSQL_DATABASE=xx -e MYSQL_USER=wor
 
 
 第二个容器：
-docker run -itd --link mywebapp-db:mysql -p 8090:80 -e WORDPRESS_DB_PASSWORD=xx --name mywebapp-php my-webapp:v3
+docker run -itd --link mywebapp-db -p 8090:80 -e WORDPRESS_DB_PASSWORD=xx --name mywebapp-php my-webapp:v3
 
 ```
 
