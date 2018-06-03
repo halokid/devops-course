@@ -44,7 +44,7 @@ docker commit {id}  test-img
 version: '2'
 services:
 webapp-db:
-    image: my-webapp:v3
+    image: my-webapp:v1
     environment:
       MYSQL_ROOT_PASSWORD: xx
       MYSQL_DATABASE: xx
@@ -54,7 +54,7 @@ webapp-db:
 webapp-php:
     depends_on:
     - webapp-db
-    image: my-webapp:v3
+    image: my-webapp:v1
     links:
     - webapp-db
     ports:
