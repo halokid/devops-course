@@ -42,7 +42,7 @@ docker run -itd --link db -p 8090:80  --name apache-php my-webapp:v1
 
 
 
-### 3.解决我们目前的问题吗， 先成功挂载mysql的数据目录
+### 3.解决我们目前的问题， 先成功挂载mysql的数据目录
 ```
 
 1.  查看 image 的 volume属性，因为启动的时候， volume是以root身份来挂载的，所以不建议直接用image的 volume，建议在容器启动的时候， 用 -v参数来指定容器运行时 volume， 首先修改image 的 mysql 的datadir目录，指向非image挂载的  volume 目录，授予目录mysql权限
