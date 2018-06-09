@@ -76,9 +76,9 @@ docker-compose up -d
 ###4. docker-compose集成部署docker的命令相应的 docker run 命令如下
 ```
 
-docker run -itd -e MYSQL_ROOT_PASSWORD=xx -e MYSQL_DATABASE=xx -e MYSQL_USER=wordpress -e MYSQL_PASSWORD=xx --name db my-webapp:v3
+docker run -itd -e MYSQL_ROOT_PASSWORD=xx -e MYSQL_DATABASE=xx -e MYSQL_USER=xx -e MYSQL_PASSWORD=xx --name mysql my-webapp:v3
 
-docker run -itd --link db:mysql -p 8090:80 -e WORDPRESS_DB_PASSWORD=xx my-webapp:v3
+docker run -itd --link db -p 8090:80  --name apache-php my-webapp:v3
 
 ```
 
