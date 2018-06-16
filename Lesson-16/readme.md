@@ -30,7 +30,7 @@ ENTRYPOINT和CMD在容器运行(run、start)时运行。
 4. ENTRYPOINT 配置容器启动时运行的命令。
 
 
-###1.  它们的定义形式
+### 1.  它们的定义形式
 ```
 # 总得来说他们的定义方式都大同小异，有shell形式 和 exec形式两种
 
@@ -67,7 +67,7 @@ CMD：
 
 ```
 
-###2.shell形式和exec的形式的区别
+### 2.shell形式和exec的形式的区别
 ```
 shell形式提供了默认的指令/bin/sh -c，所以其指定的command将在shell的环境下运行，而exec却不一定
 
@@ -80,7 +80,7 @@ shell形式提供了默认的指令/bin/sh -c，所以其指定的command将在s
 
 
 
-###3.重载机制
+### 3.重载机制
 ```
 
 Dockerfile中只有最后一个CMD指令会生效，其他会被重载。
@@ -99,7 +99,7 @@ ENTRYPOINT指定的命令不会被docker run传递的命令覆盖。容器名后
 
 ```
 
-###4. 正确的使用方法
+### 4. 正确的使用方法
 ```
 应该根据运行时机选择RUN还是ENTRYPOINT和CMD，根据实际需要选择使用shell形式还是exec形式，并尝试组合
 
