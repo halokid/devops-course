@@ -6,8 +6,12 @@ docker-compose和docker之间应用的访问
 --------------------
 ```
 
-1. 了解docker 镜像的ENTRYPOINT、CMD、RUN的属性， 了解它们的区别，掌握如何修改这两个属性的方法。
-2. 进一步完善上一节课的实践目标， 成功正确裁剪mysql， apache-php容器， 并且成功启动，编写通信验证程序。
+1. 了解docker 镜像的ENTRYPOINT、CMD、RUN的属性， 了解它们的区别，掌握如何修改这两个属
+
+性的方法。
+2. 进一步完善上一节课的实践目标， 成功正确裁剪mysql， apache-php容器， 并且成功启动，编
+
+写通信验证程序。
 
 ```
 
@@ -62,6 +66,64 @@ CMD：
     CMD ["param1","param2"]
 
 ```
+
+###2.shell形式和exec的形式的区别
+```
+shell形式提供了默认的指令/bin/sh -c，所以其指定的command将在shell的环境下运行，而exec却不一定
+
+是在用sh来运行的， 可以选择其他的linux shell来运行，比如bash， zsh等。shell形式还有一个严重的问
+
+题：由于其默认使用/bin/sh来运行命令，如果镜像中不包含/bin/sh，容器会无法启动。
+
+
+```
+
+
+
+###3.重载机制
+```
+
+Dockerfile中只有最后一个CMD指令会生效，其他会被重载。
+
+Dockerfile中只有最后一个ENTRYPOINT指令会生效，其他会被重载。
+
+CMD指定的命令可以被docker run传递的命令覆盖。
+
+如CMD ["echo"]会被docker run --rm binss/test echo test中的echo覆盖，最终输出test。
+
+ENTRYPOINT指定的命令不会被docker run传递的命令覆盖。容器名后面的所有内容都当成参数传递给其指定的命令。
+
+如ENTRYPOINT ["echo"]最终输出echo test。echo test都被当做是ENTRYPOINT指定的指令——echo的参数。
+
+当然，ENTRYPOINT指定的命令并不是不能重载的，只需指定--entrypoint来重载即可
+
+```
+
+###4. 正确的使用方法
+```
+应该根据运行时机选择RUN还是ENTRYPOINT和CMD，根据实际需要选择使用shell形式还是exec形式，并尝试组合
+
+ENTRYPOINT和CMD来达到组合两者的效果
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
