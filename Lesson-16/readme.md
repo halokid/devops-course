@@ -126,9 +126,57 @@ ENTRYPOINT和CMD来达到组合两者的效果
 ```
 
 
+my-apache-php Dockerfile
+
+```
+
+FROM my-webapp:v1
+ENTRYPOINT ["/bin/sh", "-c", "/etc/init.d/apache2 start"]
+
+```
+
+
+my-mysql Dockerfile
+
+```
+
+FROM my-webapp:v1
+ENTRYPOINT ["/bin/sh", "-c", "/etc/init.d/mysql start"]
+
+```
+
+生成镜像
+docker build -t image_name .
 
 
 
+### 6. 运行已经配置好的镜像，测试通信交互
+
+```
+
+#启动mysql
+docker run -itd --privileged=true  -v /opt/mysql-files:/var/lib/mysql-files -p 33061:3306  --name my-mysql my-mysql:v1
+
+
+#启动apache-php
+docker run -itd --link db -p 8090:80  --name  my-apache-php my-apache-php:v1
+
+
+```
+
+
+
+
+### 7. 检查容器是否启动正常， 开始进入容器进行通信测试
+
+```
+apt-get update
+
+apt-get install telnet
+
+telnet my-mysql 3306
+
+```
 
 
 
