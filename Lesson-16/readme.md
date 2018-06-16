@@ -122,7 +122,7 @@ ENTRYPOINT和CMD来达到组合两者的效果
 建议采取第一种方式， 这样便于管理我们的镜像， 让镜像一目了然。
 
 开始创建两个 Dockerfile， 分别创建一个mysql， 一个apache-php 的镜像
-`
+
 ```
 
 
