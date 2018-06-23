@@ -146,7 +146,9 @@ ENTRYPOINT ["/bin/sh", "-c", "/etc/init.d/mysql start"]
 ```
 
 生成镜像
-docker build -t image_name -f  .
+docker build  -t my-apache-php -f Dockerfile_my-apache-php .
+
+docker build  -t my-mysql -f Dockerfile_my-mysql .
 
 
 
