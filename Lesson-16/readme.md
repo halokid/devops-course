@@ -172,6 +172,8 @@ docker run -itd --link db -p 8090:80  --name  my-apache-php my-apache-php:v1
 ### 7. 检查容器是否启动正常， 开始进入容器进行通信测试
 
 ```
+# 进入apache-php容器， 然后运行下面的指令，去测试跟my-mysql容器的通信是否正常
+
 apt-get update
 
 apt-get install telnet
