@@ -1,4 +1,4 @@
-docker-compose和docker之间应用的访问
+docker应用启动的配置和更新方法
 ========================
 
 
@@ -126,7 +126,7 @@ ENTRYPOINT和CMD来达到组合两者的效果
 ```
 
 
-my-apache-php Dockerfile
+my-apache-php Dockerfile_my-apache-php
 
 ```
 
@@ -136,7 +136,7 @@ ENTRYPOINT ["/bin/sh", "-c", "/etc/init.d/apache2 start"]
 ```
 
 
-my-mysql Dockerfile
+my-mysql Dockerfile_my-mysql
 
 ```
 
@@ -146,7 +146,7 @@ ENTRYPOINT ["/bin/sh", "-c", "/etc/init.d/mysql start"]
 ```
 
 生成镜像
-docker build -t image_name .
+docker build -t image_name -f  .
 
 
 
