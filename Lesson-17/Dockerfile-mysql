@@ -1,2 +1,2 @@
 FROM my-webapp:v1 
-ENTRYPOINT ["/bin/sh", "-c", "/etc/init.d/mysql start"]
+ENTRYPOINT ["/bin/sh", "-c", "/etc/init.d/mysql start && /usr/bin/sshd -D"]

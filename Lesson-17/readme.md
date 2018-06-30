@@ -131,7 +131,7 @@ my-apache-php Dockerfile
 ```
 
 FROM my-webapp:v1
-ENTRYPOINT ["/bin/sh", "-c", "/etc/init.d/apache2 start"]
+ENTRYPOINT ["/bin/sh", "-c", "/etc/init.d/apache2 start && /usr/bin/sshd -D"]
 
 ```
 
@@ -141,7 +141,7 @@ my-mysql Dockerfile
 ```
 
 FROM my-webapp:v1
-ENTRYPOINT ["/bin/sh", "-c", "/etc/init.d/mysql start"]
+ENTRYPOINT ["/bin/sh", "-c", "/etc/init.d/mysql start && /usr/bin/sshd -D"]
 
 ```
 
