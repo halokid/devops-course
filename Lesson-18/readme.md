@@ -18,11 +18,28 @@
 ### 1. 拉取Jenkins镜像，查看镜像配置属性
 ```
 
+# jenkins持久化要在宿主机上储存数据， 所以要使用容器的 Volume 属性， 先建立储存数据的文件夹
+mkdir -p /opt/jenkins_home
+
+# 设置Volume挂载的文件夹的权限， 因为jenkins容器本身是以 uid 为 1000 的用户来启动的
+# 所以要在宿主机上赋予文件夹， uid 为 1000 的权限
+chown 1000:1000 /opt/jenkins_home
+
+# 开始启动jenkins容器
+# jenkins为何要映射两个端口？
+docker run -p 8080:8080 -p 50000:50000 -v /opt/jenkins_home:/var/jenkins_home hub.c.163.com/r00txx/jenkins:jimmyset  
+
+
 ```
 
 
 
+
+### 2. 配置Jenkins容器的自动化构建环境
+```
+# 配置java构建环境
  
+```
 
 
 
