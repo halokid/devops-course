@@ -38,6 +38,12 @@ docker run -p 8080:8080 -p 50000:50000 -v /opt/jenkins_home:/var/jenkins_home hu
 ### 2. 配置Jenkins容器的自动化构建环境
 ```
 # 配置java构建环境
+
+
+# 关于容器内的权限问题， 容器默认启动的用户和指定用户去启动容器
+
+
+# 新建Jenkins Job， 使用maven构建springboot项目， Lesson-7课程的源码
  
 ```
 
