@@ -30,7 +30,7 @@ docker save -o jenkins.tar hub.c.163.com/r00txx/jenkins:jimmyset
 sudo docker load --input jenkins.tar
 
 #可百度网盘下载Jenkins的镜像
-链接： https://pan.baidu.com/s/1Bwmr79-MIrwURCYDnRXIZg 密码：
+链接： https://pan.baidu.com/s/1Bwmr79-MIrwURCYDnRXIZg
 密码： 8ixu
 
 
