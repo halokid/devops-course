@@ -38,6 +38,18 @@ docker run -p 8080:8080 -p 50000:50000 -v /opt/jenkins_home:/var/jenkins_home hu
 ### 2. 配置Jenkins容器的自动化构建环境
 ```
 # 配置java构建环境
+#检测是否有java环境
+java version
+
+#安装maven
+wget http://mirror.bit.edu.cn/apache/maven/maven-3/3.5.2/binaries/apache-maven-3.5.2-bin.tar.gz
+tar -zxf apache-maven-3.5.2-bin.tar.gz
+
+#设置到系统的path
+export PATH=/opt/apache-maven-3.5.2/bin:$PATH
+
+#测试安装
+mvn -v
 
 
 # 关于容器内的权限问题， 容器默认启动的用户和指定用户去启动容器
