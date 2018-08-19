@@ -81,13 +81,13 @@ $ sudo pip install ansible
 
 ### 2. 开始使用Ansible
 ```
-管理端主机（控制主机）：     192.168.0.103
+管理端主机（控制主机）：     192.168.1.103
 
-客户端主机（被控制主机）：     192.168.0.229
+客户端主机（被控制主机）：     192.168.1.229
 
 
 #配置管理主机
-$vim /etc/ansible/hosts ， 在最末尾添加进客户端IP   192.168.0.229
+$vim /etc/ansible/hosts ， 在最末尾添加进客户端IP   192.168.1.229
 
 
 #Ansible需要管理端主机 和 客户端主机之间是互相信任的， 所以要配置控制主机的SSH公钥， 把控制主机的公钥拷贝到客户端主机
@@ -97,7 +97,7 @@ $vim /etc/ansible/hosts ， 在最末尾添加进客户端IP   192.168.0.229
 ssh-keygen -t rsa
 
 #拷贝公钥到客户端主机
-ssh-copy-id -i root/.ssh/id_rsa.pub root@ 192.168.0.229
+ssh-copy-id -i root/.ssh/id_rsa.pub root@ 192.168.1.229
 
 注：ssh-copy-id命令会自动将id_rsa.pub文件的内容追加到远程主机root用户下.ssh/authorized_keys文件中。
 
