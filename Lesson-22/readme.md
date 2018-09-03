@@ -46,7 +46,8 @@ Ad-Hoc命令是由/usr/bin/ansible实现的， 也就是由安装好的 ansible�
 -f NUM,--forks=NUM:并发线程数,默认5个线程。
 --private-key=PRIVATE_KEY_FILE:指定密钥文件。
 -m NAME,--module-name=NAME:指定执行使用的模块。
--M DIRECTORY,--module-path=DIRECTORY:指定模块存放路径,默认/usr/share/ansible,也可以通过ANSIBLE_LIBRARY设定默认路径。
+-M DIRECTORY,--module-path=DIRECTORY:指定模块存放路径,默认/usr/share/ansible,也可以通过
+   ANSIBLE_LIBRARY设定默认路径。
 -a 'ARGUMENTS',--args='ARGUMENTS':模块参数。
 -k,--ask-pass SSH:认证密码。
 -K,--ask-sudo-pass sudo:用户的密码(--sudo时使用)。
@@ -58,7 +59,8 @@ Ad-Hoc命令是由/usr/bin/ansible实现的， 也就是由安装好的 ansible�
 -P NUM,--poll=NUM:定期返回后台任务进度。
 -u USERNAME,--user=USERNAME:指定远程主机以USERNAME运行命令。
 -U SUDO_USERNAME,--sudo-user=SUDO_USERNAME:使用sudo,相当于Linux下的sudo命令。
--c CONNECTION,--connection=CONNECTION:指定连接方式,可用选项paramiko(SSH)、ssh、local,local方式常用于crontab和kickstarts。
+-c CONNECTION,--connection=CONNECTION:指定连接方式,可用选项paramiko(SSH)、ssh、local,local
+    方式常用于crontab和kickstarts。
 -l SUBSET,--limit=SUBSET:指定运行主机。
 -l ~REGEX,--limit=~REGEX:指定运行主机(正则)。
 --list-hosts:列出符合条件的主机列表,不执行任何命令。
@@ -153,9 +155,12 @@ SUCCESS表示命令执行成功,rc=0表示ResultCode=0,即命令返回结果,返
 - **思考的问题**
 
 ```
-1.  假如一个主机组包含10台服务器， ansible针对主机组执行任务的时候， 主机组内的主机是否是按照顺利来执行任务的？我们尝试往webserver主机组添加添加多个主机来调试下。
-
-输出结果不会完全按照webserver的主机顺序来返回的， 原因是ansible推送多个主机命令的时候，是多线程的方式来推送的，执行过程没有进程线程锁去严格按照主机的顺序来执行，所以返回的结果是无序的。但是假如执行的对象少于3个主机的话，顺序会正常， ansible默认是开3个线程同时去处理执行任务， 假如超过3个， 会存在各个线程抢任务执行的情况， 因为抢任务有快慢之分， 所以超过3个有可能会乱序返回结果。
+1.  假如一个主机组包含10台服务器， ansible针对主机组执行任务的时候， 主机组内的主机是否是按照顺利来执行任务的？我们
+    尝试往webserver主机组添加添加多个主机来调试下。
+    输出结果不会完全按照webserver的主机顺序来返回的， 原因是ansible推送多个主机命令的时候，是多线程的方式来推送的，
+    执行过程没有进程线程锁去严格按照主机的顺序来执行，所以返回的结果是无序的。但是假如执行的对象少于3个主机的话，顺序
+    会正常， ansible默认是开3个线程同时去处理执行任务， 假如超过3个， 会存在各个线程抢任务执行的情况， 因为抢任务有
+    快慢之分， 所以超过3个有可能会乱序返回结果。
 
 ```
 
