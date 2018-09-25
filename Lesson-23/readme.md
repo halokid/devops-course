@@ -104,36 +104,45 @@ apt-get install libapache2-mod-php5
 ```
 # 配置ansible启动apache的用户和用户组
 # 使用 user 模块
-ansible webserver -m user -a "name=appuser shell=/bin/bash groups=admins, appgroup 
-append=yes, home=/home/appuser/ state=present"
+ansible webserver -m user -a "name=appuser"
 
-
-# 看实际情况修改用户属组， 演示修改的命令为
-ansible webserver -m user -a "name=appuser groups=appgroup append=no"
-
+# 上面的命令会默认添加 appuser 的用户组
 
 # 修改用户属性
 1. 为安全考虑，需要修改用户的过期时间，以便定时核查用户属性
 linux计算UNIX时间戳命令为 date +%s
 ansible webserver -m user -a "name=appuser  expire=UNIX时间戳
 
+# 怎么获得unix时间戳呢？？
 
 # 删除用户属性， 删除appuser用户， 并删除其用户目录
 ansible webserver -m user -a "name=appuser state=absent remove=yes"
 
 
 # 改变用户密码
-# 设置appuser用户密码为 abcd12345
+# 设置appuser用户密码为 123456
 
-# 首先要将要修改的密码进行加密
-openssl passwd -1 -salt 'abcd12345'
+# 利用python程序生成密码
+python -c "from passlib.hash import sha512_crypt; import getpass; print(sha512_crypt.using(rounds=5000).hash(getpass.getpass()))"
 
+# 输入密码 123456
 
-# 修改用户密码指令
-ansible webserver -m user -a "name=appuser shell=/bin/bash password= update_password=always"
+# 生成 
+$6$kvSdc9d4QVZBRj6g$ZTgr2jIlAMDBtQHDucgOPNQib/DlJaNDxjEZ9ogYcDLVViFGob3gmOkIPitiCa1zzud6fts4m1Rj42MQ07BJ3.
+
+# 进行字符的转义
+'\$6\$kvSdc9d4QVZBRj6g\$ZTgr2jIlAMDBtQHDucgOPNQib/DlJaNDxjEZ9ogYcDLVViFGob3gmOkIPitiCa1zzud6fts4m1Rj42MQ07BJ3.'
+
+# ansible修改密码指令为 
+ansible webserver -m user -a "name=appuser state=present comment='this is user appuser' system=yes password='\$6\$kvSdc9d4QVZBRj6g\$ZTgr2jIlAMDBtQHDucgOPNQib/DlJaNDxjEZ9ogYcDLVViFGob3gmOkIPitiCa1zzud6fts4m1Rj42MQ07BJ3.'"
+
 
 # 验证用户是否生效
 ansible webserver -m raw -a 'tail /etc/passwd|grep appuser'
+
+# 在客户端1 进行用户的切换登录验证
+su - wist
+su - appuser
 
 ```
 
