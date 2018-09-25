@@ -44,7 +44,7 @@ ansbile-doc -l
 ```
   ansbile-doc apt
   
-  关于ansible模块帮助文档的一些讲解
+  关于ansible模块帮助文档的一些讲解， 根据apt显示的HELP信息，解读帮忙信息的意思
   
 ```
 
