@@ -79,11 +79,19 @@ www.example.com
 # 安装 php， apache， php-mysql 等环境
 
 假如我们是在webserver的OS上， 我们应该直接运行 
-apt-get *****
+apt-get install apache2
 
 
 通过 ansible 远程执行此任务， 命令为
-ansible webserver -m apt ********
+ansible webserver -m apt -a "pkg=apache2 state=latest"
+
+
+# 安装PHP相关软件
+apt-get install php5   
+apt-get install php5-mysql    
+apt-get install php5-gd    
+apt-get install libapache2-mod-php5  
+
 
 
 ```
