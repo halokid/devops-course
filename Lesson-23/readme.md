@@ -152,10 +152,11 @@ su - appuser
 
 ```
 # 启动webserver上的apache
-
+通过ansible远程执行 webserver 上的命令，启动apache
 
 
 # 验证启动的服务
+HTTP访问 webserver 验证服务
 
 ```
 
@@ -163,16 +164,6 @@ su - appuser
 
 
 # 6. 完成dbserver的配置，实践一次上面的流程
-
-
-
-
-
-
-
-
-
-
 
 
 
