@@ -152,11 +152,25 @@ su - appuser
 
 ```
 # 启动webserver上的apache
-通过ansible远程执行 webserver 上的命令，启动apache
+ansible webserver -m shell -a "su - appuser -c '/etc/init.d/apache2 start'"
 
 
-# 验证启动的服务
-HTTP访问 webserver 验证服务
+# linux系统的sudo配置, 可以进行提权处理
+1.       appuser ALL=(ALL) NOPASSWD: ALL                                                       允许appuser用户免密码以root身份执行所有的命令
+2.       appuser ALL=(ALL) NOPASSWD: /etc/init.d/apache2                       仅允许appuser用户免密码以root身份执行 /etc/init.d/apache2 命令
+
+
+# 远程追加appuser用户的权限到 sudoers 配置文件
+ansible webserver -m shell -a "echo 'appuser ALL=(ALL) NOPASSWD: /etc/init.d/apache2'  >>  /etc/sudoers"
+
+# 正确的启动apache的命令为
+ansible webserver -m shell -a "su - appuser -c 'sudo /etc/init.d/apache2 start'"
+
+# 验证启动的服务, HTTP访问 webserver 验证服务
+curl http://192.168.1.109
+
+返回web页面则为成功
+
 
 ```
 
