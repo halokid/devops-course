@@ -59,11 +59,11 @@ ansbile-doc -l
 www.example.com
  
 [webserver]
-192.168.1.229 
+192.168.1.109 
 
  
 [dbserver]
-192.168.1.109
+192.168.1.229
   
 ```
 
