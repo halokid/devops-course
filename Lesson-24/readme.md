@@ -100,6 +100,73 @@ ansible-playbook test.yaml --start-at-task='Copy http.conf'     #指定从某个
 
 
 
+- **tasks列表和action**
+
+* task配置是playbook的主体部分， 各个task按照配置的顺序逐个在hosts指定的主机上执行，完成上一个任务之后再开始执行下一个任务
+
+* 如果某一个主机上的某一个task执行失败， 则整个tasks都会回滚， 然后就需要修正playbook中的错误， 然后重新执行整个tasks即可
+
+* 每一个task都必须有一个名称name， 不然的话task会执行失败
+
+* ansible自带模块中， command、 shell两个模块无需使用 key=value 这种格式 
+
+
+
+- **Templates的用法**
+
+```
+
+# 模版的范例
+
+- hosts: webserver    //针对webserver组执行
+  vars:
+    package: apache2   //变量名称
+    server: apache2 
+  tasks:
+    - name: install httpd
+      apt: name={{package}} state=latest
+    - name: start httpd
+      service: name={{package}} enabled=true state=started
+
+
+# 当需要修改两处 {{package}} 的时候， 只需要改 vars 里面的 package 变量就可以了， 这个就是模版的作用
+
+
+```
+
+- **playbook还有很多高级用法， 我们先快速入门， 然后再进阶学习**
+
+- **第一个playbook的示例**
+
+```
+
+vim /opt/one.yml
+
+
+- hosts: all
+  remote_user: root
+  vars: httpd_port=8090
+  
+  tasks:
+  - name: install apache 
+    apt: name=apache2 state=present
+
+  - name: install php
+    apt: name=php state=present
+
+  - name: start apache
+    service: name=apache2 state=started enabled=true
+
+
+```
+
+
+
+
+
+
+
+
 
 
 
