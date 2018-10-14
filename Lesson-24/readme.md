@@ -102,13 +102,13 @@ ansible-playbook test.yaml --start-at-task='Copy http.conf'     #指定从某个
 
 - **tasks列表和action**
 
- - 1. task配置是playbook的主体部分， 各个task按照配置的顺序逐个在hosts指定的主机上执行，完成上一个任务之后再开始执行下一个任务
+   1. task配置是playbook的主体部分， 各个task按照配置的顺序逐个在hosts指定的主机上执行，完成上一个任务之后再开始执行下一个任务
 
- - 2. 如果某一个主机上的某一个task执行失败， 则整个tasks都会回滚， 然后就需要修正playbook中的错误， 然后重新执行整个tasks即可
+   2. 如果某一个主机上的某一个task执行失败， 则整个tasks都会回滚， 然后就需要修正playbook中的错误， 然后重新执行整个tasks即可
 
- - 3. 每一个task都必须有一个名称name， 不然的话task会执行失败
+   3. 每一个task都必须有一个名称name， 不然的话task会执行失败
 
- - 4. ansible自带模块中， command、 shell两个模块无需使用 key=value 这种格式 
+   4. ansible自带模块中， command、 shell两个模块无需使用 key=value 这种格式 
 
 
 
