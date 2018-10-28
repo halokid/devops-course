@@ -143,19 +143,19 @@ ansible-playbook test.yaml --start-at-task='Copy http.conf'     #指定从某个
 vim /opt/one.yml
 
 
-- hosts: all
-  remote_user: root
-  vars: httpd_port=8090
-  
   tasks:
   - name: install apache 
-    apt: name=apache2 state=present
+    apt:  pkg=apache2 state=latest
 
   - name: install php
-    apt: name=php state=present
+    apt:  pkg=php5 state=latest
 
   - name: start apache
     service: name=apache2 state=started enabled=true
+    
+  - name: check apache port status
+    shell: netstat -anp | grep {{httpd_port}}
+    
 
 
 ```
