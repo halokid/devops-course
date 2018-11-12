@@ -30,7 +30,7 @@
 
   ​
 
-* 首先在管理端编译安装nginx 
+* 首先在管理端编译安装nginx （在管理端执行）
 ```shell
 # 直接用apt-get, yum 的方式虽然方便， 但是编译安装我们是devops系统运维一定要掌握的安装方式
 
@@ -42,7 +42,8 @@ apt-get install libpcre3 libpcre3-dev openssl zlib1g zlib1g-dev
 
 # ./configue 的作用就是配置我们即将要安装的nginx的一些选项
 # --prefix 表要要安装在哪个目录
-# --with-xx 的写法表示我们在编译nginx过程中会用到什么软件库，常见的软件库有zlib（压缩算法用到），pcre(正则库，URL重写会用到), ssl(加密，HTTPS会用到)
+# --with-xx 的写法表示我们在编译nginx过程中会用到什么软件库，常见的软件库有zlib（压缩算法用到），
+# pcre(正则库，URL重写会用到), ssl(加密，HTTPS会用到)
 
 # 3. make 编译
 
@@ -127,19 +128,52 @@ exit 0
 
 
 
-* 下发管理端的nginx
-```python
+* 按照官方建议生成目录结构 （在管理端执行）
+```shell
 
-# 用python验证
-python -c 'import yaml, sys; print yaml.load(sys.stdin)' < myyaml.yml
+cd /etc/ansible
+
+mkdir -p nginx_install/roles/{common,delete,install}/{handlers,files,meta,tasks,templates,vars}
 
 
-# ansible原生功能验证
-ansible-playbook  test.yaml --syntax-check  #检查语法
-ansible-playbook test.yaml --list-task       #检查tasks任务
-ansible-playbook test.yaml --list-hosts      #检查生效的主机
-ansible-playbook test.yaml --start-at-task='Copy http.conf'     #指定从某个task开始运行
+# 文件夹作用说明
+# common  	为安装nginx做一些准备配置操作
+# delete  	删除nginx的操作
+# install  	安装nginx的操作
+
+# 以上的每个目录下 又有几个目录
+# handlers    标识当发生改变时要执行的操作
+# files 	  安装nginx时要用到的一些文件
+# meta        存放一些说明信息的文件
+# tasks       核心的配置文件， 具体的任务操作文件
+# template    通常存一些配置文件, 启动脚本等模板文件
+# vars        通常为定义的变量文件
+
 ```
 
 
+
+
+* 按照官方建议生成目录结构 （在管理端执行）
+```shell
+
+cd /etc/ansible
+
+mkdir -p nginx_install/roles/{common,delete,install}/{handlers,files,meta,tasks,templates,vars}
+
+
+# 文件夹作用说明
+# common  	为安装nginx做一些准备配置操作
+# delete  	删除nginx的操作
+# install  	安装nginx的操作
+
+# 以上的每个目录下 又有几个目录
+# handlers    标识当发生改变时要执行的操作
+# files 	  安装nginx时要用到的一些文件
+# meta        存放一些说明信息的文件
+# tasks       核心的配置文件， 具体的任务操作文件
+# template    通常存一些配置文件, 启动脚本等模板文件
+# vars        通常为定义的变量文件
+
+```
 
