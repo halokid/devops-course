@@ -154,7 +154,7 @@ mkdir -p nginx_install/roles/{common,delete,install}/{handlers,files,meta,tasks,
 
 
 
-* 按照官方建议生成目录结构 （在管理端执行）
+* 打包nginx并生成 （在管理端执行）
 ```shell
 
 cd /etc/ansible
