@@ -154,7 +154,7 @@ mkdir -p nginx_install/roles/{common,delete,install}/{handlers,files,meta,tasks,
 
 
 
-* 打包nginx并生成 （在管理端执行）
+* 打包nginx并生成压缩包拷贝 （在管理端执行）
 ```shell
 
 cd /etc/ansible
@@ -175,5 +175,181 @@ mkdir -p nginx_install/roles/{common,delete,install}/{handlers,files,meta,tasks,
 # template    通常存一些配置文件, 启动脚本等模板文件
 # vars        通常为定义的变量文件
 
+
+cd /usr/local/
+
+tar czvf nginx.tar.gz nginx
+
+cp nginx.tar.gz /etc/ansible/nginx_install/roles/install/files/
+
+cp /etc/init.d/nginx /etc/ansible/nginx_install/roles/install/templates/
+
+# 说明：把安装文件放于 install/files/ 目录下，把启动脚本放于install/templates/ 目录下。
+
+
+
+
 ```
+
+
+
+* 定义相关的yaml文件 （在管理端执行）
+```shell
+
+# 1. 定义common的tasks（这里主要是定义nginx需要安装的一些依赖包）
+# -------------------------------------------------------
+
+cd /etc/ansible/nginx_install/roles/
+
+vim common/tasks/main.yml 
+
+---
+
+- name: Install initializtion require software
+
+  yum: name={{ item }} state=installed
+
+  with_items:
+    - gcc
+    - zlib-devel
+    - pcre-devel
+    - openssl-devel
+
+
+# --------------------------------------------------------
+
+
+
+# 2. 定义install的vars
+# ---------------------------------------------------------
+
+vim install/vars/main.yml
+
+
+nginx_user: nobody
+
+nginx_basedir: /usr/local/nginx
+
+# 注意： 这个 nginx_user 要和 nginx.conf 配置文件中定义的用户一样。
+# 还可以定义一些其他的变量比如
+# nginx_port: 80
+# nginx_web_dir: /data/www
+# nginx_version: 1.4.4
+
+# ---------------------------------------------------------
+
+
+
+# 3. 定义install的tasks
+# ---------------------------------------------------------
+
+# 拷贝分发文件到客户端
+ vim install/tasks/copy.yml
+ 
+ - name: Copy Nginx Files
+   copy: src=nginx.tar.gz dest=/tmp/nginx.tar.gz owner=root group=root
+  
+ - name: Uncompress Nginx Files
+   shell: tar zxf /tmp/nginx.tar.gz -C /usr/local/
+
+ - name: Copy Nginx Scripts
+   template: src=nginx dest=/etc/init.d/nginx owner=root group=root mode=0755
+  
+  
+  
+# 在客户端安装nginx
+vim install/tasks/install.yml
+
+- name: Create Nginx User
+  user: name={{ nginx_user }} state=present createhome=no shell=/sbin/nologin
+
+- name: Start Nginx Service
+  service: name=nginx state=started
+
+- name: Add Boot Start Nginx Service
+  shell: chkconfig --level 345 nginx on
+
+- name: Delete Nginx compression files
+  shell: rm -rf /tmp/nginx.tar.gz
+  
+   
+# task汇总文件的写法， 先执行 copy， 再执行install，通过定义文件的顺序执行task
+vim install/tasks/main.yml
+
+- include: copy.yml
+
+- include: install.yml
+
+# ---------------------------------------------------------
+
+
+
+
+# 4. 定义整个 ansible-playbook 的总入口文件
+cd /etc/ansible/nginx_install/
+
+vim install.yml
+
+---
+
+- hosts: testhost
+  remote_user: root
+  gather_facts: True
+  
+  roles:
+    - common
+    - install
+
+```
+
+
+
+
+* 执行下发（在管理端执行）
+```shell
+
+# 验证Iventory文件是否正确
+
+# 执行下发命令
+ansible-playbook install.yml
+
+
+# 在客户端验证下发结果（在客户端执行）
+
+rpm -qa |egrep 'gcc|zlib|pcre|openssl'
+
+ls /usr/local/nginx/
+
+ps -ef |grep nginx
+
+chkconfig --list nginx
+
+  
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
