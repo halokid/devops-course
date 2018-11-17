@@ -14,7 +14,7 @@
 
 
 
-### 1. NGINX介绍及其使用
+### 1. NGINX介绍及通过ansible-playbook安装
 
 * NGINX是一个高性能的 HTTP 和 反向代理 服务器 
 
@@ -91,19 +91,19 @@ case "$1" in
         ;;
   stop)
         echo -n "Stopping $DESC: "
-        start-stop-daemon --stop --quiet --pidfile $PIDFILE --exec $DAEMON
+        start-stop-daemon --stop --quiet --exec $DAEMON
         echo "$NAME."
         ;;
   restart|force-reload)
         echo -n "Restarting $DESC: "
-        start-stop-daemon --stop --quiet --pidfile $PIDFILE --exec $DAEMON
+        start-stop-daemon --stop --quiet  --exec $DAEMON
         sleep 1
-        start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS
+        start-stop-daemon --start --quiet  --exec $DAEMON -- $DAEMON_OPTS
         echo "$NAME."
         ;;
   reload)
       echo -n "Reloading $DESC configuration: "
-      start-stop-daemon --stop --signal HUP --quiet --pidfile $PIDFILE --exec $DAEMON
+      start-stop-daemon --stop --signal HUP --quiet --exec $DAEMON
       echo "$NAME."
       ;;
   *)
@@ -148,7 +148,6 @@ mkdir -p nginx_install/roles/{common,delete,install}/{handlers,files,meta,tasks,
 # tasks       核心的配置文件， 具体的任务操作文件
 # template    通常存一些配置文件, 启动脚本等模板文件
 # vars        通常为定义的变量文件
-
 ```
 
 
@@ -156,25 +155,6 @@ mkdir -p nginx_install/roles/{common,delete,install}/{handlers,files,meta,tasks,
 
 * 打包nginx并生成压缩包拷贝 （在管理端执行）
 ```shell
-
-cd /etc/ansible
-
-mkdir -p nginx_install/roles/{common,delete,install}/{handlers,files,meta,tasks,templates,vars}
-
-
-# 文件夹作用说明
-# common  	为安装nginx做一些准备配置操作
-# delete  	删除nginx的操作
-# install  	安装nginx的操作
-
-# 以上的每个目录下 又有几个目录
-# handlers    标识当发生改变时要执行的操作
-# files 	  安装nginx时要用到的一些文件
-# meta        存放一些说明信息的文件
-# tasks       核心的配置文件， 具体的任务操作文件
-# template    通常存一些配置文件, 启动脚本等模板文件
-# vars        通常为定义的变量文件
-
 
 cd /usr/local/
 
@@ -185,7 +165,6 @@ cp nginx.tar.gz /etc/ansible/nginx_install/roles/install/files/
 cp /etc/init.d/nginx /etc/ansible/nginx_install/roles/install/templates/
 
 # 说明：把安装文件放于 install/files/ 目录下，把启动脚本放于install/templates/ 目录下。
-
 
 
 
@@ -211,9 +190,11 @@ vim common/tasks/main.yml
 
   with_items:
     - gcc
-    - zlib-devel
-    - pcre-devel
-    - openssl-devel
+    - libpcre3 
+    - libpcre3-dev 
+    - openssl 
+    - zlib1g 
+    - zlib1g-dev
 
 
 # --------------------------------------------------------
@@ -264,10 +245,11 @@ vim install/tasks/install.yml
   user: name={{ nginx_user }} state=present createhome=no shell=/sbin/nologin
 
 - name: Start Nginx Service
-  service: name=nginx state=started
+  # service: name=nginx state=started
+  shell: /etc/init.d/nginx start
 
 - name: Add Boot Start Nginx Service
-  shell: chkconfig --level 345 nginx on
+  shell: insserv /etc/init.d/nginx
 
 - name: Delete Nginx compression files
   shell: rm -rf /tmp/nginx.tar.gz
@@ -292,14 +274,13 @@ vim install.yml
 
 ---
 
-- hosts: testhost
+- hosts: nginxhosts
   remote_user: root
   gather_facts: True
   
   roles:
     - common
     - install
-
 ```
 
 
@@ -310,19 +291,76 @@ vim install.yml
 
 # 验证Iventory文件是否正确
 
+cat /etc/ansible/hosts
+修改之前的group名称为我们这次实践的名称
+
+# 测试一下主机的状态
+ansible nginxhosts -m ping
+
 # 执行下发命令
 ansible-playbook install.yml
 
 
 # 在客户端验证下发结果（在客户端执行）
 
-rpm -qa |egrep 'gcc|zlib|pcre|openssl'
-
 ls /usr/local/nginx/
 
 ps -ef |grep nginx
 
-chkconfig --list nginx
+cat /etc/init.d/nginx
+
+netstat -anp | grep nginx
+
+  
+```
+
+
+
+### 2. 日常运维更新nginx
+
+* 新建拷贝配件文件（在管理端执行）
+```shell
+
+cat /etc/ansible
+
+# 建立配置更新nginx的相关role文件
+mkdir -p nginx_config/roles
+
+cd nginx_config/roles/
+mkdir -p new/{vars,files,tasks,handlers}
+
+# 配置相关文件， new是表示更新nginx的时候用到的文件
+cp /usr/local/nginx/conf/nginx.conf new/files
+
+# 为了实践效果，我们定义一个vhosts文件夹
+# 当nginx需要配置多个域名服务的时候，一般需要用到vhosts文件夹里面的多个配置文件做配置
+mkdir -p /usr/local/nginx/conf/vhosts
+cp -r /usr/local/nginx/conf/vhosts new/files
+
+  
+```
+
+
+
+* 定义一些变量（在管理端执行）
+```shell
+
+vim new/vars/main.yml
+
+nginx_basedir: /usr/local/nginx
+
+  
+```
+
+
+
+* 更新nginx之后，重新启动nginx服务（在管理端执行）
+```shell
+
+vim new/handlers/main.yml
+
+- name: restart nginx
+  shell: /etc/init.d/nginx reload
 
   
 ```
@@ -330,16 +368,74 @@ chkconfig --list nginx
 
 
 
+* 汇总所有tasks任务文件（在管理端执行）
+```shell
+
+vim new/tasks/main.yml
+
+
+- name: copy conf file
+  copy: src={{ item.src }} dest={{ nginx_basedir }}/{{ item.dest }} backup=yes owner=root group=root mode=0644
+  with_items:
+    - { src: nginx.conf, dest: conf/nginx.conf }
+    - { src: vhosts, dest: conf/ }
+  notify: restart nginx
+
+  
+```
 
 
 
 
+* 定义入口文件 （在管理端执行）
+```shell
+
+cd ..
+
+vim update.yml
+
+---
+- hosts: nginxhosts
+  user: root
+  roles:
+  - new
+
+  
+```
 
 
 
 
+* 测试更新nginx配置和重启服务 （在管理端执行）
+```shell
+
+vim roles/new/files/vhosts/test_domain.conf
+
+# 1. 写上示例的文本内容，模拟配置nginx虚拟主机范例， 详细的nginx vhosts文件配置可在之后详细了解
+#testdomain.devops.com
 
 
+# 2. 发布更新nginx 
+ansible-playbook update.yml 
+  
+  
+# 3. 在客户端查看是否已经更新了配置
+cat /usr/local/nginx/conf/vhosts/test_domain.conf
+
+
+```
+
+
+
+###  3. 课程总结
+
+通过今天的课程实践，可知正确的使用 ansible-playbook可以轻松远程部署，管理nginx的日常运维，多个
+
+nginx节点只需要一套配置文件，执行脚本即可，方便实用，按照ansible-playbook官方推荐的文件结构形式
+
+，条理分明，运维耦合度比较低，非常实用，熟练之后，可一人轻松管理N台nginx，其他的运维工作借鉴这
+
+种方式即可。
 
 
 
