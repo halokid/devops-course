@@ -131,6 +131,10 @@ exit 0
 # 上面的脚本保存为  /etc/init.d/nginx
 
 
+# 执行授权
+chmod +x /etc/init.d/nginx
+
+
 # 启动nginx
 /etc/init.d/nginx start
 
