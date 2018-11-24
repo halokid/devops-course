@@ -41,6 +41,12 @@ apt-get install libpcre3 libpcre3-dev openssl zlib1g zlib1g-dev
 # 下载nginx源码包
 wget http://nginx.org/download/nginx-1.4.4.tar.gz
 
+# 解压nginx源码包
+tar -zxvf nginx-1.4.4.tar.gz
+
+# 如果要解压到指定的文件夹路径
+tar -zxvf nginx-1.4.4.tar.gz -C /opt
+
 # 进行配置检查
 ./configure --prefix=/usr/local/nginx --with-http_realip_module --with-http_sub_module   
                                       --with-http_gzip_static_module --with-http_stub_status_module  
