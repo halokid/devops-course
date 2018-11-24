@@ -38,6 +38,10 @@
 apt-get install libpcre3 libpcre3-dev openssl zlib1g zlib1g-dev 
 
 # 2. 先针对编译安装nginx进行配置检查
+# 下载nginx源码包
+wget http://nginx.org/download/nginx-1.4.4.tar.gz
+
+# 进行配置检查
 ./configure --prefix=/usr/local/nginx --with-http_realip_module --with-http_sub_module --with-http_gzip_static_module --with-http_stub_status_module  --with-pcre
 
 # ./configue 的作用就是配置我们即将要安装的nginx的一些选项
