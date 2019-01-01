@@ -202,7 +202,7 @@ vim common/tasks/main.yml
 
 - name: Install initializtion require software
 
-  yum: name={{ item }} state=installed
+  apt: name={{ item }} state=installed
 
   with_items:
     - gcc
