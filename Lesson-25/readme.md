@@ -369,7 +369,7 @@ cp -r /usr/local/nginx/conf/vhosts new/files
 ```
 
 
-#  修改2, 更改nginx默认的服务监听端口
+* 修改2, 更改nginx默认的服务监听端口
 ```shell
 
 vim roles/new/files/nginx.conf
