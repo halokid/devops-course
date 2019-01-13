@@ -334,10 +334,10 @@ netstat -anp | grep nginx
 
 ### 2. 日常运维更新nginx
 
-* 新建拷贝配件文件（在管理端执行）
+*  修改1， 新建拷贝配件文件（在管理端执行）
 ```shell
 
-cat /etc/ansible
+cd /etc/ansible
 
 # 建立配置更新nginx的相关role文件
 mkdir -p nginx_config/roles
@@ -350,10 +350,37 @@ cp /usr/local/nginx/conf/nginx.conf new/files
 
 # 为了实践效果，我们定义一个vhosts文件夹
 # 当nginx需要配置多个域名服务的时候，一般需要用到vhosts文件夹里面的多个配置文件做配置
+# 具体可参考 nginx 的vhost文件配置形式
 mkdir -p /usr/local/nginx/conf/vhosts
+
+vim  /usr/local/nginx/conf/vhosts/test-domain.conf
+# ------
+
+server {
+    listen       80;
+    server_name   www.test-domain.com;
+
+# -----
+
+
 cp -r /usr/local/nginx/conf/vhosts new/files
 
   
+```
+
+
+#  修改2, 更改nginx默认的服务监听端口
+```shell
+
+vim roles/new/files/nginx.conf
+# -------
+
+#testdomain.devops.com
+server {
+    listen    8089;
+
+# -------
+
 ```
 
 
@@ -425,7 +452,7 @@ vim update.yml
 * 测试更新nginx配置和重启服务 （在管理端执行）
 ```shell
 
-vim roles/new/files/vhosts/test_domain.conf
+vim roles/new/files/vhosts/test-domain.conf
 
 # 1. 写上示例的文本内容，模拟配置nginx虚拟主机范例， 详细的nginx vhosts文件配置可在之后详细了解
 #testdomain.devops.com
@@ -438,6 +465,7 @@ ansible-playbook update.yml
 # 3. 在客户端查看是否已经更新了配置
 cat /usr/local/nginx/conf/vhosts/test_domain.conf
 
+# 4. 查看最新的nginx服务端口是否改变
 
 ```
 
