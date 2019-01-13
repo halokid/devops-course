@@ -471,7 +471,13 @@ cat /usr/local/nginx/conf/vhosts/test_domain.conf
 
 
 
-###  3. 课程总结
+
+### 3. 优化Ansible性能的配置
+
+
+
+
+###  4. 课程总结
 
 通过今天的课程实践，可知正确的使用 ansible-playbook可以轻松远程部署，管理nginx的日常运维，多个
 
