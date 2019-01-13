@@ -31,6 +31,7 @@
   ​
 
 * 首先在管理端编译安装nginx （在管理端执行）
+
 ```shell
 # 直接用apt-get, yum 的方式虽然方便， 但是编译安装我们是devops系统运维一定要掌握的安装方式
 
@@ -144,8 +145,9 @@ chmod +x /etc/init.d/nginx
 
 
 
-* 按照官方建议生成目录结构 （在管理端执行）
-```shell
+* 按照官方建议生成目录结构 （在管理端执行)
+
+```
 
 cd /etc/ansible
 
@@ -164,13 +166,15 @@ mkdir -p nginx_install/roles/{common,delete,install}/{handlers,files,meta,tasks,
 # tasks       核心的配置文件， 具体的任务操作文件
 # template    通常存一些配置文件, 启动脚本等模板文件
 # vars        通常为定义的变量文件
+
 ```
 
 
 
 
 * 打包nginx并生成压缩包拷贝 （在管理端执行）
-```shell
+
+```
 
 cd /usr/local/
 
@@ -189,7 +193,8 @@ cp /etc/init.d/nginx /etc/ansible/nginx_install/roles/install/templates/
 
 
 * 定义相关的yaml文件 （在管理端执行）
-```shell
+
+```
 
 # 1. 定义common的tasks（这里主要是定义nginx需要安装的一些依赖包）
 # -------------------------------------------------------
@@ -303,7 +308,8 @@ vim install.yml
 
 
 * 执行下发（在管理端执行）
-```shell
+
+```
 
 # 验证Iventory文件是否正确
 
@@ -335,8 +341,8 @@ netstat -anp | grep nginx
 ### 2. 日常运维更新nginx
 
 *  修改1， 新建拷贝配件文件（在管理端执行）
-```shell
 
+```
 cd /etc/ansible
 
 # 建立配置更新nginx的相关role文件
@@ -370,7 +376,8 @@ cp -r /usr/local/nginx/conf/vhosts new/files
 
 
 * 修改2, 更改nginx默认的服务监听端口
-```shell
+
+```
 
 vim roles/new/files/nginx.conf
 # -------
@@ -386,7 +393,8 @@ server {
 
 
 * 定义一些变量（在管理端执行）
-```shell
+
+```
 
 vim new/vars/main.yml
 
@@ -398,7 +406,8 @@ nginx_basedir: /usr/local/nginx
 
 
 * 更新nginx之后，重新启动nginx服务（在管理端执行）
-```shell
+
+```
 
 vim new/handlers/main.yml
 
@@ -412,7 +421,8 @@ vim new/handlers/main.yml
 
 
 * 汇总所有tasks任务文件（在管理端执行）
-```shell
+
+```
 
 vim new/tasks/main.yml
 
@@ -431,8 +441,8 @@ vim new/tasks/main.yml
 
 
 * 定义入口文件 （在管理端执行）
-```shell
 
+```
 cd ..
 
 vim update.yml
@@ -450,7 +460,8 @@ vim update.yml
 
 
 * 测试更新nginx配置和重启服务 （在管理端执行）
-```shell
+
+```
 
 vim roles/new/files/vhosts/test-domain.conf
 
@@ -473,6 +484,49 @@ cat /usr/local/nginx/conf/vhosts/test_domain.conf
 
 
 ### 3. 优化Ansible性能的配置
+
+- 关闭 gathering facts， ansible操作任务的时候， 会默认收集远程系统的信息， 主要包含IP地址，操作系统，以太网设备，mac 地址，时间/日期相关数据，硬件信息等信息, 这个信息就是fact信息。如果我们不需要这些信息来作为执行的必要条件，就可以屏蔽这个收集的动作，这样就可以大大的提高ansible的效果，一般可以提高40%左右。
+
+```
+
+# Ansible 提供了 setup 模块来收集主机的系统信息，这些 facts 信息可以直接以变量的形式使用。
+
+ansible all -m setup
+
+
+# 查看获取fact信息的耗时
+time ansible localhost -m setup
+
+# 直接屏蔽收集fact信息的设置
+gather_facts: no 
+
+# 例如在定义 install_nginx 任务的时候，改为
+vim install.yml
+
+---
+
+- hosts: nginxhosts
+  remote_user: root
+  gather_facts: False       # 原来是True
+  
+  roles:
+    - common
+    - install
+
+
+# 请自行测试该优化效果， 当远程的机器多的时候尤为明显
+    
+```
+
+
+- 开启pipelining, SSH pipelining 是一个加速 Ansible 执行速度方法，默认是关闭，之所以默认关闭是为了兼容不同的sudo配置，主要是 requiretty 选项。如果不使用 sudo，建议开启。打开此选项可以减少 ansible 执行没有传输时 ssh 在被控机器上执行任务的连接数。不过，如果使用 sudo，必须关闭 requiretty 选项。修改 /etc/ansible/ansible.cfg 文件可以开启 pipelining
+
+```
+pipelining=True
+
+# 请自行测试该优化效果， 当远程的机器多的时候尤为明显
+
+```
 
 
 
