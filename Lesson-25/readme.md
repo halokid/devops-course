@@ -427,7 +427,7 @@ vim new/handlers/main.yml
 vim new/tasks/main.yml
 
 
-- name: copy conf file
+- name: copy conf file and restart nginx
   copy: src={{ item.src }} dest={{ nginx_basedir }}/{{ item.dest }} backup=yes owner=root group=root mode=0644
   with_items:
     - { src: nginx.conf, dest: conf/nginx.conf }
