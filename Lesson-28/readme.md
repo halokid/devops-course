@@ -55,7 +55,7 @@ service webmin start/stop
 
 ### 配置Webmin
 
-```
+```shell
 
 # 更改主机名，查看主机名是否正确
 # -- 默认首页点击相关信息即可进行修改
@@ -84,7 +84,7 @@ Webmin --> Webmin Configuration ---> Ports and Addresses
 
 ### 使用Webmin
 
-```
+```shell
 
 # 查看系统信息，资源状态， 进程等
 
