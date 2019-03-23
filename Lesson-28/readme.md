@@ -86,11 +86,16 @@ Webmin --> Webmin Configuration ---> Ports and Addresses
 
 ```shell
 
-# 查看系统信息，资源状态， 进程等
+# Dashboard默认信息可方便查看系统信息，资源状态， 进程等 
 
-# 查看系统日志
+# 查看关键的系统日志
+ - /var/log/messages — 包括整体系统信息，其中也包含系统启动期间的日志。此外，mail，cron，daemon，kern和auth等内容也记录在var/log/messages日志中
+ - /var/log/dmesg — 包含内核缓冲信息（kernel ring buffer），系统启动时屏幕上显示的硬件有关的信息
+ - /var/log/boot.log — 包含系统启动时的日志
+ - /var/log/daemon.log — 包含各种系统后台守护进程日志信息
+ - /var/log/auth.log— 包含验证和授权方面信息，通过ssh登录成功，失败的信息，可查看可疑的爆破登录，可疑ssh连接等
 
-# 更新配置软件包
+# 更新配置软件包，卸载和安装apache
 
 # 管理系统用户和用户组
 
@@ -98,7 +103,10 @@ Webmin --> Webmin Configuration ---> Ports and Addresses
 
 # 管理系统文件
 
-
+# webmin集群管理多台主机
+ - 添加多一台linux主机到集群中去 Webmin --> Webmin Server Index
+ - 管理添加主机的模块
+ - 在集群的webmin远程执行添加改的主机命令， Cluster --> Cluster Shell Commands
 
 ```
 
