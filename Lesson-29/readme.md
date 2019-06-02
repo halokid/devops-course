@@ -19,6 +19,9 @@
 - 性能好，系统开销很低，本质上是系统进程
 
 
+### 有兴趣的同学可以先尝试常规安装zabbix
+https://www.zabbix.com/documentation/4.2/manual/installation/install_from_packages/debian_ubuntu
+
 
 ### 安装zabbix
 首先保证好我们已正确安装好docker， 可以查看之前的docker的教程。
