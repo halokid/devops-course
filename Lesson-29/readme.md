@@ -37,15 +37,14 @@ chown -R mysql.mysql  /data/zabbix/mysql
 
 
 # 运行mysql容器
-docker run --name zabbix-server-mysql -t \
-      -e DB_SERVER_HOST="mysql-server" \
+docker run --name mysql-server -t \
       -e MYSQL_DATABASE="zabbix" \
       -e MYSQL_USER="zabbix" \
       -e MYSQL_PASSWORD="zabbix_pwd" \
       -e MYSQL_ROOT_PASSWORD="root_pwd" \
-      --link mysql-server:mysql \
-      -p 10051:10051 \
-      -d zabbix/zabbix-server-mysql:latest
+      -v /data/zabbix/mysql:/var/lib/mysql \
+      -d mysql:5.7
+
       
       
 # 运行zabbix server容器
