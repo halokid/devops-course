@@ -94,7 +94,9 @@ ps -ef | grep nginx
 
 
 # 访问zabbix的web端
-http://192.168.1.103:8080
+http://192.168.1.103
+
+默认是用户名和密码   Admin/zabbix
 
 
 # 实际上如果安装传统的方式来安装zabbix，是需要安装较多的中间件，并且进行配置的，现在使用docker来
