@@ -70,7 +70,7 @@ docker run --name zabbix-web-nginx-mysql -t \
       --link mysql-server:mysql \
       --link zabbix-server-mysql:zabbix-server \
       -p 80:80 \
-      -d zabbix/zabbix-web-nginx-mysql:lates
+      -d zabbix/zabbix-web-nginx-mysql:latest
       
       
 
