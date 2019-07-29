@@ -3,7 +3,7 @@ devops核心理念和最佳实践课程的资料存档
 
 这个系列的课程是连载的更新课程的课件目录，课程链接在
 
-<a href="https://www.aqniukt.com/course/6733" target="_blank">课程链接</a>
+[课程链接](https://www.aqniukt.com/course/6733){:target="_blank"}
 
 如果觉得有所帮助，可以打赏一下哦，谢谢。
 
