@@ -7,7 +7,7 @@ devops核心理念和最佳实践课程的资料存档
 
 如果觉得有所帮助，可以打赏一下哦，谢谢。
 
-![image](https://github.com/halokid/devops-course/blob/master/img/1.jpg)
+<img width="200" height="300" src="https://github.com/halokid/devops-course/blob/master/img/1.jpg" />
 
-![image](https://github.com/halokid/devops-course/blob/master/img/2.jpg)
+<img width="300" height="350" src="https://github.com/halokid/devops-course/blob/master/img/2.jpg" />
 
