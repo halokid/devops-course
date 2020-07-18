@@ -44,7 +44,9 @@ Fluentd
 <match *.**>
   @type copy
   <store>
+    # 把收集的数据储存在es
     @type elasticsearch
+    # 配置es的地址
     host elasticsearch
     port 9200
     logstash_format true
