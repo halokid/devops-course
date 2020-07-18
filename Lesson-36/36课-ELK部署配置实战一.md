@@ -34,9 +34,37 @@ docker pull httpd:latest
 Fluentd
 
 ```shell
+# 首先编辑fluented的配置文件
+# fluentd/conf/fluent.conf
+<source>
+  @type forward
+  port 24224
+  bind 0.0.0.0
+</source>
+<match *.**>
+  @type copy
+  <store>
+    @type elasticsearch
+    host elasticsearch
+    port 9200
+    logstash_format true
+    logstash_prefix fluentd
+    logstash_dateformat %Y%m%d
+    include_tag_key true
+    type_name access_log
+    tag_key @log_name
+    flush_interval 1s
+  </store>
+  <store>
+    @type stdout
+  </store>
+</match>
+
+
 # Fluentd
 docker pull fluent/fluentd:latest
 # 需要配置fluentd 的elasticsearch， 数据才可以直接通信到elasticsearch
+
 
 # 编辑Dockerfile， 重新生成安装好插件的 fluented镜像
 # ------------------------------------
